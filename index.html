@@ -1,81 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pelias by pelias</title>
 
-    <title>Pelias</title>
-
-    <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
-    <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.0-beta0/mapbox.css' rel='stylesheet' />
-    <link href='https://cdn.rawgit.com/mapzen/pelias/gh-pages/application.css' rel='stylesheet' />
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.0-beta0/mapbox.js'></script>
-    <script src="https://cdn.rawgit.com/mapzen/pelias/gh-pages/application.js"></script>
-
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
-
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pelias</h1>
+        <p>Pelias is a modular open-source geocoder using ElasticSearch for fast geocoding. </p>
 
-  <body ng-app="play">
+        <p class="view"><a href="https://github.com/pelias/pelias">View the Project on GitHub <small>pelias/pelias</small></a></p>
 
-    <div map-demo id="map" center="center"></div>
 
-    <div class="container-fluid" ng-controller="SearchCtrl">
+        <ul>
+          <li><a href="https://github.com/pelias/pelias/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/pelias/pelias/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/pelias/pelias">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>Pelias is a modular open-source geocoder built on top of ElasticSearch for fast geocoding. </p>
 
-      <div id="top">
-        <div class="row">
-          <div class="col-md-3">
-            <input class="form-control input-lg" placeholder="Type something..." ng-model="input" focus/>
-          </div>
-        </div>
-      </div>
+<h3>
+<a id="whats-a-geocoder-do-anyway" class="anchor" href="#whats-a-geocoder-do-anyway" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's a geocoder do anyway?</h3>
 
-      <div class="row" ng-show="input">
-        <div class="col-md-6 results">
-          <div class="row">
+<p>Geocoding is the process of transforming input text, such as an address, or a name of a place—to a location on the earth's surface.</p>
 
-            <div class="col-md-6">
-              <div class="lead">Search</div>
-              <div ng-repeat="result in searchResults" class="small" ng-click="goTo(result)">
-                <strong>{{ result.properties.name }} ({{result.properties.type}})</strong><br/>
-                <div ng-repeat="field in fieldsFor(result)">{{ field }}: {{ result.properties[field + '_name'] }}</div>
-              </div>
-              <p ng-if="!searchResults.length"><em>Nothing to see here</em></p>
-            </div>
+<p><img src="./img/geocoding.gif" alt="geocode"></p>
 
-            <div class="col-md-6">
-              <div class="lead">Suggest</div>
-              <div ng-repeat="result in suggestResults" class="small" ng-click="goTo(result)">
-                <strong>{{ result.properties.name }} ({{result.properties.type}})</strong><br/>
-                <em>{{ result.properties.hint }}</em><br/>
-                <div ng-repeat="field in fieldsFor(result)">{{ field }}: {{ result.properties[field + '_name'] }}</div>
-              </div>
-              <p ng-if="!suggestResults.length"><em>Nothing to see here</em></p>
-            </div>
+<h3>
+<a id="-and-a-reverse-geocoder-whats-that" class="anchor" href="#-and-a-reverse-geocoder-whats-that" aria-hidden="true"><span class="octicon octicon-link"></span></a>... and a reverse geocoder, what's that?</h3>
 
-          </div>
-        </div>
-      </div>
+<p>Reverse geocoding is the opposite, it transforms your current geographic location in to a list of places nearby.</p>
 
-      <div class="centerLabel">
-        <div class="pointer"></div>
-        <div class="label" ng-show="spec.reverseResults.length">
-          {{ spec.reverseResults[0].properties.name }}
-        </div>
-      </div>
+<p><img src="./img/reverse.gif" alt="reverse"></p>
 
+<h3>
+<a id="what-makes-pelias-different-from-other-geocoders" class="anchor" href="#what-makes-pelias-different-from-other-geocoders" aria-hidden="true"><span class="octicon octicon-link"></span></a>What makes Pelias different from other geocoders?</h3>
+
+<ul>
+<li>It's completely open-source and MIT licensed</li>
+<li>It's based on open-data, so you can run it yourself</li>
+<li>You can install it locally and modify to suit your needs</li>
+<li>It has an impressive list of features, such as fast autocomplete</li>
+<li>It's modular, so you don't need to be an expert to make changes</li>
+<li>It's easy to install and requires no external dependencies</li>
+<li>We run a continuous deployment cycle with a new version shipping weekly</li>
+</ul>
+
+<h3>
+<a id="what-are-the-main-goals-of-the-pelias-project" class="anchor" href="#what-are-the-main-goals-of-the-pelias-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>What are the main goals of the Pelias project?</h3>
+
+<ul>
+<li>Provide accurate search results</li>
+<li>Give users query suggestions (typeahead in the search box)</li>
+<li>Account for location bias (places nearer to you appear higher in the results)</li>
+<li>Support multiple data sources (OSM, geonames, quattroshapes etc)</li>
+<li>Flexible software architecture</li>
+<li>Easy to contribute software patches and features to</li>
+<li>Easy to set-up and configure your own instance</li>
+<li>No external dependencies (such as postgres)</li>
+<li>Reliable, configurable &amp; fast import process</li>
+<li>Work equally well for a small city and the entire planet</li>
+</ul>
+
+<h3>
+<a id="im-a-developer-can-i-get-access-to-the-api" class="anchor" href="#im-a-developer-can-i-get-access-to-the-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>I'm a developer, can I get access to the API?</h3>
+
+<p>Pelias was rebuilt from scratch and re-launched at the end of Sept '14 so the API is still in Alpha and will be subject to change for the rest of the year.</p>
+
+<p>You don't need a key to access the demo API, however we are enforcing some generous rate limits. If you need help building your own Pelias server get in touch!</p>
+
+<h4>
+<a id="suggest" class="anchor" href="#suggest" aria-hidden="true"><span class="octicon octicon-link"></span></a>/suggest</h4>
+
+<p>The suggest endpoint provides a super-fast autocomplete. This API can be used to quickly find location names which BEGIN with the input text.</p>
+
+<p>You must provide a latitude and longitude so that the results are localised, you may additionally provide a zoom value.</p>
+
+<p><a href="http://pelias.mapzen.com/suggest?input=big%20ben&amp;lat=51.5&amp;lon=-0.06">http://pelias.mapzen.com/suggest?input=big%20ben&amp;lat=51.5&amp;lon=-0.06</a>
+<img src="./img/suggest.gif" alt="suggest"></p>
+
+<h4>
+<a id="search" class="anchor" href="#search" aria-hidden="true"><span class="octicon octicon-link"></span></a>/search</h4>
+
+<p>The search endpoint provides a full-text search. This search is far more flexible than <code>/suggest</code>. It will try to account for spelling mistakes and will search for your input at any position in the location name.</p>
+
+<p>You must provide a latitude and longitude so that the results are localised. You may additionally provide a zoom value.</p>
+
+<p><a href="http://pelias.mapzen.com/search?input=shoreditch&amp;lat=51.5&amp;lon=-0.06">http://pelias.mapzen.com/search?input=shoreditch&amp;lat=51.5&amp;lon=-0.06</a>
+<img src="./img/search.gif" alt="search"></p>
+
+<h4>
+<a id="reverse" class="anchor" href="#reverse" aria-hidden="true"><span class="octicon octicon-link"></span></a>/reverse</h4>
+
+<p>The reverse endpoint returns the nearest locations to your input lat/lon.</p>
+
+<p>You must provide a latitude and longitude so that the results are localised. You may additionally provide a zoom value.</p>
+
+<p><a href="http://pelias.mapzen.com/reverse?lat=51.5&amp;lon=-0.06">http://pelias.mapzen.com/reverse?lat=51.5&amp;lon=-0.06</a>
+<img src="./img/reverse2.gif" alt="reverse"></p>
+
+<h3>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h3>
+
+<p>If you would like to report a problem please <a href="https://github.com/pelias/pelias/issues">open an issue</a>.
+Pull requests are welcome!
+</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/pelias">pelias</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-47035811-1', 'mapzen.com');
-      ga('send', 'pageview');
-    </script>
-
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
-
 </html>
